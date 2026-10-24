@@ -14,23 +14,15 @@ import "./App.css";
 const API_URL =
   "https://api.thingspeak.com/channels/3500352/feeds.json?results=20";
 
-function getCategory(code) {
-  switch (code) {
-    case 1:
-      return "Good";
-    case 2:
-      return "Satisfactory";
-    case 3:
-      return "Moderate";
-    case 4:
-      return "Poor";
-    case 5:
-      return "Very Poor";
-    case 6:
-      return "Severe";
-    default:
-      return "Unknown";
-  }
+function getCategory(aqi) {
+  if (aqi === null || !Number.isFinite(aqi)) return "Unavailable";
+
+  if (aqi <= 50) return "Good";
+  if (aqi <= 100) return "Satisfactory";
+  if (aqi <= 200) return "Moderate";
+  if (aqi <= 300) return "Poor";
+  if (aqi <= 400) return "Very Poor";
+  return "Severe";
 }
 
 function getAQIClass(aqi) {
@@ -95,15 +87,15 @@ function App() {
         };
 
         const nextData = {
-          pm25: toNumber(latest.field1),
-          no2: toNumber(latest.field2),
-          o3: toNumber(latest.field3),
-          aqi: toNumber(latest.field4),
-          category: getCategory(toNumber(latest.field5)),
-          temperature: toNumber(latest.field6),
-          humidity: toNumber(latest.field7),
-          predictedAQI: toNumber(latest.field8)
-        };
+  pm25: toNumber(latest.field1),
+  no2: toNumber(latest.field2),
+  o3: toNumber(latest.field3),
+  aqi: toNumber(latest.field4),
+  category: getCategory(toNumber(latest.field4)),
+  temperature: toNumber(latest.field5),
+  humidity: toNumber(latest.field6),
+  predictedAQI: toNumber(latest.field7)
+};
 
         const chartData = feeds.map((item) => ({
           time: new Date(item.created_at).toLocaleTimeString([], {
@@ -111,7 +103,7 @@ function App() {
             minute: "2-digit"
           }),
           aqi: toNumber(item.field4),
-          predicted: toNumber(item.field8)
+          predicted: toNumber(item.field7)
         }));
 
         if (cancelled) return;
