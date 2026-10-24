@@ -30,10 +30,10 @@ function App() {
   // THINGSPEAK SETTINGS
   // ==========================================
 
-  const CHANNEL_ID = "YOUR_CHANNEL_ID";
+  const CHANNEL_ID = "3500352";
 
   const API_URL =
-    `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?results=20`;
+    `https://api.thingspeak.com/channels/${3500352}/feeds.json?results=20`;
 
   // ==========================================
   // GET DATA FROM THINGSPEAK
